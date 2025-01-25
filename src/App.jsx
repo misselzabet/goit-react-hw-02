@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import Description from './ components/Description/Description';
 import Feedback from './ components/Feedback/Feedback';
 import Options from './ components/Options/Options';
 import Notification from './ components/Notification/Notification';
 import './App.css';
 
 const App = () => {
+
   const [feedback, setFeedback] = useState(() => {
     const savedFeedback = localStorage.getItem('feedback');
     return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0 };
   });
+
 
   useEffect(() => {
     localStorage.setItem('feedback', JSON.stringify(feedback));
@@ -31,22 +34,20 @@ const App = () => {
 
   return (
     <div className="app">
-      <h1>Sip Happens Café</h1>
-      <p>Please leave your feedback about our service by selecting one of the options below.</p>
+      <Description /> 
       <Options
         options={['good', 'neutral', 'bad']}
         onLeaveFeedback={updateFeedback}
         onReset={resetFeedback}
-        totalFeedback={totalFeedback} 
+        totalFeedback={totalFeedback}
       />
-
       {totalFeedback > 0 ? (
         <Feedback
           good={feedback.good}
           neutral={feedback.neutral}
           bad={feedback.bad}
-          total={totalFeedback} 
-          positivePercentage={positiveFeedbackPercentage} 
+          total={totalFeedback}
+          positivePercentage={positiveFeedbackPercentage}
         />
       ) : (
         <Notification message="No feedback given yet" />
